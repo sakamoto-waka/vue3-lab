@@ -1,31 +1,63 @@
 <script setup>
 import { ref } from 'vue'
-const item = ref ({
+const items = ref ([
+  {
   id: 1,
   name: 'アボカドディップバケット',
   description:
     '刻んだ野菜をアボカドと混ぜてディップに。こんがり焼いたバケットとお召し上がりください。',
     price: 480,
-    image: '../public/images/item1.jpg'
-})
+    image: '/images/item1.jpg',
+    soldOut: false,
+  },
+  {
+    id: 2,
+    name: 'あの日夢見たホットケーキ',
+    description:
+      '子供のころに食べたかった、あのホットケーキを再現しました。素朴でどこか懐かしい味をどうぞ。',
+    price: 1180,
+    image: '/images/item2.jpg',
+    soldOut: false,
+  },
+  {
+    id: 3,
+    name: 'HOP WTR',
+    description:
+      'ロサンゼルス生まれのスパークリングウォーター。ノンカロリー、ノンアルコールの新感覚飲料です。',
+    price: 320,
+    image: '/images/item3.jpg',
+    soldOut: true,
+  },
+  {
+    id: 4,
+    name: 'チーズフレンチフライ',
+    description:
+      'イタリア産チーズをたっぷりかけたアツアツのフレンチフライ。みんな大好きな一品です。',
+    price: 670,
+    image: '/images/item4.jpg',
+    soldOut: false,
+  }
+])
 </script>
 
 <template>
   <header class="header">
-    <img src="../public/images/logo.svg" alt="">
+    <img src="/images/logo.svg" alt="">
     <h1>Vue.js ハンズオン</h1>
   </header>
   <main class="main">
-    <div class="item">
-      <div class="thumbnail">
-        <img :src="item.image" alt="">
+    <template v-for="item in items" :key="item.id">
+      <div v-if="!item.soldOut" class="item">
+        <div class="thumbnail">
+          <img :src="item.image" alt="">
+        </div>
+        <div class="description">
+          <h2>{{ item.name }}</h2>
+          <p>{{ item.description }}</p>
+          <span>¥<span class="price">{{ item.price }}</span></span>
+        </div>
       </div>
-      <div class="description">
-        <h2>{{ item.name }}</h2>
-        <p>{{ item.description }}</p>
-        <span>¥<span class="price">{{ item.price }}</span></span>
-      </div>
-    </div>
+    </template>
   </main>
 </template>
 
