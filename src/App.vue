@@ -42,6 +42,14 @@ const items = ref ([
 function pricePrefix(price) {
   return price.toLocaleString()
 }
+
+function stockQuantity() {
+  return items.value.filter(item => item.soldOut === false).length
+}
+
+function stockItem(item) {
+  item.soldOut = false
+}
 </script>
 
 <template>
@@ -49,6 +57,7 @@ function pricePrefix(price) {
     <img src="/images/logo.svg" alt="">
     <h1>Vue.js ハンズオン</h1>
   </header>
+  <div>商品数：{{ stockQuantity() }}</div>
   <main class="main">
     <template v-for="item in items" :key="item.id">
       <div v-if="!item.soldOut" class="item">
@@ -60,6 +69,9 @@ function pricePrefix(price) {
           <p>{{ item.description }}</p>
           <span>¥<span class="price">{{ pricePrefix(item.price) }}</span></span>
         </div>
+      </div>
+      <div v-else>
+        売り切れです<button type="button" @click="stockItem(item)">入荷</button>
       </div>
     </template>
   </main>
