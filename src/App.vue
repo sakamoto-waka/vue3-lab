@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 const items = ref ([
   {
   id: 1,
@@ -9,6 +9,7 @@ const items = ref ([
     price: 480,
     image: '/images/item1.jpg',
     soldOut: false,
+    selected: false,
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const items = ref ([
     price: 1180,
     image: '/images/item2.jpg',
     soldOut: false,
+    selected: false,
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ const items = ref ([
     price: 320,
     image: '/images/item3.jpg',
     soldOut: true,
+    selected: false,
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ const items = ref ([
     price: 670,
     image: '/images/item4.jpg',
     soldOut: false,
+    selected: false,
   }
 ])
 
@@ -43,13 +47,21 @@ function pricePrefix(price) {
   return price.toLocaleString()
 }
 
-function stockQuantity() {
+const stockQuantityComputed = computed(function() {
   return items.value.filter(item => item.soldOut === false).length
-}
+})
 
 function stockItem(item) {
   item.soldOut = false
 }
+
+// function getDate() {
+//   return Date.now()
+// }
+
+const getDateComputed = computed(function() {
+  return Date.now()
+})
 </script>
 
 <template>
@@ -57,10 +69,16 @@ function stockItem(item) {
     <img src="/images/logo.svg" alt="">
     <h1>Vue.js ハンズオン</h1>
   </header>
-  <div>商品数：{{ stockQuantity() }}</div>
+  <div>商品数：{{ stockQuantityComputed }}</div>
+  <div>現在時刻：{{ getDateComputed }}</div>
   <main class="main">
     <template v-for="item in items" :key="item.id">
-      <div v-if="!item.soldOut" class="item">
+      <div 
+        v-if="!item.soldOut" 
+        class="item"
+        :class="{ 'selected-item': item.selected }"
+        @click="item.selected = !item.selected">
+        <!-- :classはtrueのときだけ適用される　↑↑押したら今と逆を代入すれば交互にできる↑↑ -->
         <div class="thumbnail">
           <img :src="item.image" alt="">
         </div>
@@ -157,5 +175,9 @@ body {
 .item > div.description > span > .price {
   font-size: 28px;
   font-weight: bold;
+}
+
+.selected-item {
+  background-color: #e3f2fd;
 }
 </style>
